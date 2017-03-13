@@ -1,5 +1,7 @@
 # prustle (Python-like Standard Library)
 
+[![Build Status](https://api.travis-ci.org/da-x/prustle-rs.svg?branch=master)](https://travis-ci.org/da-x/prustle-rs)
+
 This Rust crate is a (very, very!) partial implementation of the
 [Python Standard Library](https://docs.python.org/2/library/) using
 Rust primitives.
