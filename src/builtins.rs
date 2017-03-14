@@ -68,23 +68,13 @@ impl<T1, T2, T3> Boolable for (T1, T2, T3)
                               { fn get_bool_value(self) -> bool { true  }}
 
 /// Similar to the Python [all](https://docs.python.org/2/library/functions.html#all) builtin.
-pub fn all<T, Z>(x : T) -> bool where Z : Boolable, T : Iterator<Item = Z> {
-    for v in x {
-        if !v.get_bool_value() {
-            return false
-        }
-    }
-    true
+pub fn all<I, T>(i : I) -> bool where T : Boolable, I : IntoIterator<Item = T> {
+    i.into_iter().all(|e| e.get_bool_value())
 }
 
 /// Similar to the Python [any](https://docs.python.org/2/library/functions.html#any) builtin.
-pub fn any<T, Z>(x : T) -> bool where Z : Boolable, T : Iterator<Item = Z> {
-    for v in x {
-        if v.get_bool_value() {
-            return true
-        }
-    }
-    false
+pub fn any<I, T>(i : I) -> bool where T : Boolable, I : IntoIterator<Item = T> {
+    i.into_iter().any(|e| e.get_bool_value())
 }
 
 #[cfg(test)]
@@ -117,12 +107,12 @@ mod tests {
     #[test]
     fn all_and_any() {
         let empty : [u32;0] = [];
-        assert_eq!(super::all(empty.into_iter()), true);
-        assert_eq!(super::all([2, 3, 4].into_iter()), true);
-        assert_eq!(super::all([2, 0, 4].into_iter()), false);
-        assert_eq!(super::any(empty.into_iter()), false);
-        assert_eq!(super::any([2, 3, 4].into_iter()), true);
-        assert_eq!(super::any([2, 0, 4].into_iter()), true);
-        assert_eq!(super::any([0, 0, 0].into_iter()), false);
+        assert_eq!(super::all(empty.iter()), true);
+        assert_eq!(super::all([2, 3, 4].iter()), true);
+        assert_eq!(super::all([2, 0, 4].iter()), false);
+        assert_eq!(super::any(empty.iter()), false);
+        assert_eq!(super::any([2, 3, 4].iter()), true);
+        assert_eq!(super::any([2, 0, 4].iter()), true);
+        assert_eq!(super::any([0, 0, 0].iter()), false);
     }
 }
