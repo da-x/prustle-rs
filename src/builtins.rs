@@ -77,6 +77,17 @@ pub fn any<I, T>(i : I) -> bool where T : Boolable, I : IntoIterator<Item = T> {
     i.into_iter().any(|e| e.get_bool_value())
 }
 
+use std::cmp::Ordering;
+
+/// Similar to the Python [cmp](https://docs.python.org/2/library/functions.html#cmp) builtin.
+pub fn cmp<T>(a : &T, b : &T) -> i64 where T : Ord {
+    match a.cmp(b) {
+        Ordering::Less    => -1,
+        Ordering::Equal   => 0,
+        Ordering::Greater => 1,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -114,5 +125,12 @@ mod tests {
         assert_eq!(super::any([2, 3, 4].iter()), true);
         assert_eq!(super::any([2, 0, 4].iter()), true);
         assert_eq!(super::any([0, 0, 0].iter()), false);
+    }
+
+    #[test]
+    fn cmp() {
+        assert_eq!(super::cmp(&1, &2), -1);
+        assert_eq!(super::cmp(&2, &1), 1);
+        assert_eq!(super::cmp(&1, &1), 0);
     }
 }
