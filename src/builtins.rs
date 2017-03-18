@@ -1,3 +1,7 @@
+extern crate easy_strings;
+use self::easy_strings::EZString;
+
+
 ///
 /// Macro to mimick Python's slicing.
 ///
@@ -60,6 +64,7 @@ impl<'a, T>
 impl<'a>
          Boolable for &'a str { fn get_bool_value(self) -> bool { self.len() != 0 }}
 impl     Boolable for bool    { fn get_bool_value(self) -> bool { self }}
+impl     Boolable for EZString{ fn get_bool_value(self) -> bool { !self.is_empty() }}
 impl     Boolable for ()      { fn get_bool_value(self) -> bool { false }}
 impl<T1> Boolable for (T1, )  { fn get_bool_value(self) -> bool { true  }}
 impl<T1, T2> Boolable for (T1, T2)
@@ -113,6 +118,8 @@ mod tests {
         assert_eq!(false.get_bool_value(), false);
         assert_eq!(" xx".get_bool_value(), true);
         assert_eq!("".get_bool_value(), false);
+        assert_eq!(super::EZString::from(" xx").get_bool_value(), true);
+        assert_eq!(super::EZString::from("").get_bool_value(), false);
     }
 
     #[test]
